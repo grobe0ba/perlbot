@@ -1,0 +1,77 @@
+#include <stdlib.h>
+#include <stdio.h>
+#include <dlfcn.h>
+
+void doList();
+
+void *userdb;
+int (*userdb_init)();
+void (*userdb_term)();
+int (*userdb_addUser)(char *, char *);
+char **(*userdb_listUsers)();
+char *(*userdb_getNextUser)();
+int (*userdb_numUsers)();
+
+int main(void)
+{
+	userdb = dlopen("./libuserdb.so", RTLD_LAZY);
+	if(!userdb)
+	{
+		fprintf(stderr, "Could not load userdb.so: %s\n", dlerror());
+		return -1;
+	}
+
+	userdb_init = dlsym(userdb, "userdb_init");
+	printf("%s\n", dlerror());
+	userdb_term = dlsym(userdb, "userdb_term");
+	printf("%s\n", dlerror());
+	userdb_addUser = dlsym(userdb, "userdb_addUser");
+	printf("%s\n", dlerror());
+	userdb_listUsers = dlsym(userdb, "userdb_listUsers");
+	printf("%s\n", dlerror());
+	userdb_numUsers = dlsym(userdb, "userdb_numUsers");
+	userdb_getNextUser = dlsym(userdb, "getNextUser");
+
+
+	printf("init\n");
+	userdb_init();
+	printf("list\n");
+	doList();
+
+	printf("add\n");
+	userdb_addUser("urmomlookslikea","hippopotomus");
+	printf("list\n");
+	doList();
+
+	printf("term\n");
+	userdb_term();
+
+	/*printf("addUser(\"holycow\",\"urmom.com\") returned: %d\n", (*addUser)("holycow","urmom.com"));*/
+
+	dlclose(userdb);
+	return 0;
+}
+
+void doList()
+{
+	char *tmp;
+	int i;
+	char **users;
+
+	users = userdb_listUsers();
+
+	for(i=0; i<userdb_numUsers(); i++)
+	{
+		printf("%s\n", users[i]);
+	}
+
+	printf("\n");
+
+	tmp = userdb_getNextUser();
+	printf("got\n");
+	while(tmp != NULL)
+	{
+		printf("%s\n", tmp);
+		tmp = userdb_getNextUser();
+	}
+}
