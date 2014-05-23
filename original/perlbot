@@ -27,7 +27,7 @@
 
 
 use IO::Socket;
-use IO::Socket::INET6;
+#use IO::Socket::INET6;
 use Sys::Hostname;
 use DBI;
 
@@ -37,24 +37,26 @@ use warnings;
 my $socket;
 
 #Configuration
-my $server = "irc.sdf.org";
+my $server = "irc.conflictirc.net";
 #my $local = "2001:470:1f07:96f:feed:1:0:face";
 my $port = 6667;
 my $nick = "PBRBot";
 my $host = hostname( );
 my $realname = "Byron Grobe";
 my $pass = "NULL";
+my %evallist = ();
+my $evalnum = 0;
 
 my $reload=0; #DO NOT MODIFY
 
 my $conn = DBI->connect("dbi:SQLite:dbname=users.db", "", "", { RaiseError => 1, AutoCommit => 0 });
 
-my @autojoin = ("#helpdesk","#sdf","#bots","#smeg");
+my @autojoin = ("#s3x3","#bots");
 
 #Pseudo-module configuration
 my $do_autojoin		= "true";
 
-my @autovoice_chans	= ("#sdf","#helpdesk");
+my @autovoice_chans	= ("#bots");
 
 my $do_pub_ban		= "true";
 my $do_pub_voice	= "true";
@@ -63,6 +65,9 @@ my $do_pub_op		= "true";
 my $whois_ident;
 my $whois_hostmask;
 my $whois_realname;
+
+#$SIG{CHLD} = sub { my $pid = wait; do_print "PRIVMSG #bots :RX SIGCHLD from $pid\n"; delete $evallist{$pid}; };
+$SIG{CHLD} = 'IGNORE';
 
 open(my $log, "> ia.log") or die ("Could not open log file: $!\n");
 
@@ -310,7 +315,7 @@ sub privmsg
 	}
 	if(($cmd =~ /\.action/i) )
 	{
-		do_print ":$nick PRIVMSG $channel :\001ACTION @args\001\n";
+		do_print ":$nick PRIVMSG $channel :\001ACTION @args \001\n";
 	}
 
 	if(($cmd eq ".google"))
@@ -383,6 +388,12 @@ sub privmsg
 		($cmd, my @args) = split(/\ /, $cmd);
 
 		print STDERR "$channel :$person!$ident\@$hostmask : command $cmd\n";
+
+		if(($cmd =~ /\.msg/i))
+		{
+			my $recp = shift @args;
+			do_print "PRIVMSG $recp :@args\n";
+		}
 
 		if(($cmd =~ /\.whois/i ))
 		{
@@ -555,10 +566,33 @@ sub privmsg
 		if(($cmd =~ /\.eval/i ))
 		{
 			die "Could not fork: $!\n" unless defined (my $evalpid = fork());
-			if ($evalpid)
+			$evalnum = $evalnum + 1;
+			my $key = "eval$evalnum";
+			$evallist{$key} = $evalpid;
+			if (!$evalpid)
 			{
 				eval "@args";
-				kill("TERM" => $evalpid);
+				exit 0;
+			}
+		}
+		if(($cmd =~ /\.listeval/i ))
+		{
+			do_print "PRIVMSG $channel :ID\tPID\n";
+			while( my ($key, $value) = each(%evallist))
+			{
+				do_print "PRIVMSG $channel :$key\t$value\n";
+			}
+		}
+		if(($cmd =~ /\.stopeval/i ))
+		{
+			while (my ($key, $value) = each(%evallist))
+			{
+				my $chk = join("",@args);
+				if( grep(/\Q$key/i,$chk))
+				{
+					do_print "PRIVMSG $channel :Attempting to kill PID $value, Eval ID @args\n";
+					kill 9,$value;
+				}
 			}
 		}
 	}
@@ -588,7 +622,13 @@ sub do_io
 	{
 		while(defined (my $line = <$socket>))
 		{
-
+			while (my($eval, $pid)=each(%evallist))
+			{
+				if(!(kill 0,$pid))
+				{
+					delete $evallist{$eval};
+				}
+			}
 			chop($line);
 			print STDOUT "$line\n";
 
