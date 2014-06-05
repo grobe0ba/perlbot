@@ -37,10 +37,10 @@ use warnings;
 my $socket;
 
 #Configuration
-my $server = "irc.conflictirc.net";
+my $server = "irc.sdf.org";
 #my $local = "2001:470:1f07:96f:feed:1:0:face";
 my $port = 6667;
-my $nick = "PBRBot";
+my $nick = "OPBot";
 my $host = hostname( );
 my $realname = "Byron Grobe";
 my $pass = "NULL";
@@ -655,12 +655,22 @@ sub do_io
 	}
 	if($reload)
 	{
-		open(my $nsfh, "< perlbot") or die "Could not open self: $!\n";
-		my @nssize = stat $nsfh;
-		sysread $nsfh,my $ns,$nssize[7];
-		close $nsfh;
-		eval $ns;
+		#open(my $nsfh, "< perlbot") or die "Could not open self: $!\n";
+		#my @nssize = stat $nsfh;
+		#sysread $nsfh,my $ns,$nssize[7];
+		#close $nsfh;
+		#eval $ns;
+		reload;
 	}
+}
+
+sub reload
+{
+	open(my $nsfh, "< perlbot") or die "Could not open self: $!\n";
+	my @nssize = stat $nsfh;
+	sysread $nsfh,my $ns,$nssize[7];
+	close $nsfh;
+	eval $ns;
 }
 
 sub do_keepalive()
@@ -678,6 +688,7 @@ die "could not fork: $!\n" unless defined(my $pid=fork( ));
 if($pid)
 {
 	do_io();
+	reload();
 	kill("TERM" => $pid);
 }
 else
