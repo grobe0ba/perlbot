@@ -660,7 +660,7 @@ sub do_io
 		#sysread $nsfh,my $ns,$nssize[7];
 		#close $nsfh;
 		#eval $ns;
-		reload;
+		reload();
 	}
 }
 
