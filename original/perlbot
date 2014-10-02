@@ -43,7 +43,7 @@ my $port = 6667;
 my $nick = "cercinus";
 my $host = hostname( );
 my $realname = "Byron Grobe";
-my $pass = "***REMOVED***";
+my $pass = "";
 my %evallist = ();
 my $evalnum = 0;
 
