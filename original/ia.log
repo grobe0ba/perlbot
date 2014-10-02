@@ -1,0 +1,26 @@
+PASS 131875751
+NICK cercinus
+USER cercinus asgard.pulpie.net irc.freenode.net :Byron Grobe
+PRIVMSG cluros :ident 131875751
+PONG 005
+:cercinus JOIN #barsoom
+:cercinus PRIVMSG grobe0ba :Path:	/usr/ports/devel/checkbashisms Info:	Debian script that checks for bash-isms
+:cercinus PRIVMSG grobe0ba :Path:	/usr/ports/russian/fortune-bashorgru Info:	Fortunes from bash.org.ru and freebsd.rusnet.org.ru/bash
+:cercinus PRIVMSG grobe0ba :Path:	/usr/ports/shells/bash Info:	The GNU Project's Bourne Again SHell
+:cercinus PRIVMSG grobe0ba :Path:	/usr/ports/shells/bash-completion Info:	Programmable completion library for Bash
+:cercinus PRIVMSG grobe0ba :Path:	/usr/ports/shells/bash-static Info:	The GNU Project's Bourne Again SHell
+:cercinus PRIVMSG grobe0ba :Path:	/usr/ports/shells/bashc Info:	GNU bash shell extended with visual two-panel file browser
+:cercinus PRIVMSG grobe0ba :Path:	/usr/ports/shells/p5-Bash-Completion Info:	Extensible system to provide bash completion
+:cercinus PRIVMSG grobe0ba :Path:	/usr/ports/sysutils/bashburn Info:	CD burning bash script
+:cercinus PRIVMSG grobe0ba :Path:	/usr/ports/sysutils/mybashburn Info:	Ncurses CD burning bash script
+:cercinus PRIVMSG grobe0ba :Path:	/usr/ports/www/mochiweb-basho Info:	Erlang library for building lightweight HTTP servers (Basho fork)
+:cercinus PRIVMSG grobe0ba_ :Path:	/usr/ports/devel/checkbashisms Info:	Debian script that checks for bash-isms
+:cercinus PRIVMSG grobe0ba_ :Path:	/usr/ports/russian/fortune-bashorgru Info:	Fortunes from bash.org.ru and freebsd.rusnet.org.ru/bash
+:cercinus PRIVMSG grobe0ba_ :Path:	/usr/ports/shells/bash Info:	The GNU Project's Bourne Again SHell
+:cercinus PRIVMSG grobe0ba_ :Path:	/usr/ports/shells/bash-completion Info:	Programmable completion library for Bash
+:cercinus PRIVMSG grobe0ba_ :Path:	/usr/ports/shells/bash-static Info:	The GNU Project's Bourne Again SHell
+:cercinus PRIVMSG grobe0ba_ :Path:	/usr/ports/shells/bashc Info:	GNU bash shell extended with visual two-panel file browser
+:cercinus PRIVMSG grobe0ba_ :Path:	/usr/ports/shells/p5-Bash-Completion Info:	Extensible system to provide bash completion
+:cercinus PRIVMSG grobe0ba_ :Path:	/usr/ports/sysutils/bashburn Info:	CD burning bash script
+:cercinus PRIVMSG grobe0ba_ :Path:	/usr/ports/sysutils/mybashburn Info:	Ncurses CD burning bash script
+:cercinus PRIVMSG grobe0ba_ :Path:	/usr/ports/www/mochiweb-basho Info:	Erlang library for building lightweight HTTP servers (Basho fork)
