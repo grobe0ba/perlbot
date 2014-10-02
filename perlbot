@@ -44,7 +44,7 @@ my $port = 6667;
 my $nick = "DarkHelmet";
 my $host = hostname( );
 my $realname = "Byron Grobe";
-my $pass = "***REMOVED***";
+my $pass = "";
 
 #my $conn = DBI->connect("dbi:SQLite:dbname=/home/grobe0ba/src/fnpb/users.db", "", "", { RaiseError => 1, AutoCommit => 0 });
 
