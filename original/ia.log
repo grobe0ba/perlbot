@@ -1,7 +1,7 @@
-PASS ***REMOVED***
+PASS 131875751
 NICK cercinus
 USER cercinus asgard.pulpie.net irc.freenode.net :Byron Grobe
-PRIVMSG cluros :ident ***REMOVED***
+PRIVMSG cluros :ident 131875751
 PONG 005
 :cercinus JOIN #barsoom
 :cercinus PRIVMSG grobe0ba :Path:	/usr/ports/devel/checkbashisms Info:	Debian script that checks for bash-isms
