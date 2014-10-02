@@ -43,7 +43,7 @@ my $port = 6667;
 my $nick = "cercinus";
 my $host = hostname( );
 my $realname = "Byron Grobe";
-my $pass = "131875751";
+my $pass = $ARGV[0];
 my %evallist = ();
 my $evalnum = 0;
 
@@ -331,28 +331,39 @@ sub privmsg
 		do_print ":$nick PRIVMSG $channel :http://www.google.com/search?q=$newargs\n";
 	}
 
-	if(($cmd =~ /\.port/i) )
+	if(($cmd =~ /\.port
+/i) )
 	{
+	    if (@args < 2)
+	    {
+		do_print ":$nick PRIVMSG $channel :Usage: .port (name|key) port [| nick]";
+		return;
+	    }
 	    my $search_type = shift @args;
 	    my $pkg_name = shift @args;
 	    my $path = "";
 	    my $info = "";
 	    my $found = 0;
 
+	    if($args[0] eq "|")
+	    {
+		$person = $args[1];
+	    }
+
 	    open(my $make_in, "/usr/bin/make -C /usr/ports search $search_type=$pkg_name|") or die "Could not fork: $!\n";
 	    while(defined (my $line=<$make_in>))
 	    {
-		print $line;
 		chomp $line;
 		if($line =~ /^Path:/)
 		{
 		    $line =~ s/Path: //;
-dscree		    $info = $line;
+		    $info = $line;
 		    $found = 1;
 		}
 		if($line =~ /^Info:/)
 		{
-		    do_print ":$nick PRIVMSG $channel :$info $line\n";
+		    do_print ":$nick PRIVMSG $person :$info $line\n";
+		    sleep 1;
 		    $info = "";
 		}
 	    }

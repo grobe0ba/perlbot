@@ -43,7 +43,7 @@ my $port = 6667;
 my $nick = "cercinus";
 my $host = hostname( );
 my $realname = "Byron Grobe";
-my $pass = "";
+my $pass = $ARGV[0];
 my %evallist = ();
 my $evalnum = 0;
 
@@ -333,6 +333,11 @@ sub privmsg
 
 	if(($cmd =~ /\.port/i) )
 	{
+	    if (@args < 2)
+	    {
+		do_print ":$nick PRIVMSG $person :Usage: .port (name|key) port [| nick]\n";
+		return;
+	    }
 	    my $search_type = shift @args;
 	    my $pkg_name = shift @args;
 	    my $path = "";
