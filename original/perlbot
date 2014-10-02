@@ -473,6 +473,7 @@ sub privmsg
 
 		if(($cmd =~ /\.die/i ))
 		{
+		    $reload = 0;
 			do_print ":$nick QUIT :@args\n";
 		}
 		if(($cmd =~ /\.reload/i ))
