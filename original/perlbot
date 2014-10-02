@@ -1,4 +1,4 @@
-#!/usr/bin/perl -w
+#!/usr/local/bin/perl -w
 
 # Copyright (C) 2009, Byron Grobe
 # All rights reserved.
@@ -37,13 +37,13 @@ use warnings;
 my $socket;
 
 #Configuration
-my $server = "irc.sdf.org";
+my $server = "irc.freenode.net";
 #my $local = "2001:470:1f07:96f:feed:1:0:face";
 my $port = 6667;
-my $nick = "OPBot";
+my $nick = "cercinus";
 my $host = hostname( );
 my $realname = "Byron Grobe";
-my $pass = "NULL";
+my $pass = "131875751";
 my %evallist = ();
 my $evalnum = 0;
 
@@ -51,7 +51,7 @@ my $reload=0; #DO NOT MODIFY
 
 my $conn = DBI->connect("dbi:SQLite:dbname=users.db", "", "", { RaiseError => 1, AutoCommit => 0 });
 
-my @autojoin = ("#s3x3","#bots");
+my @autojoin = ("#barsoom");
 
 #Pseudo-module configuration
 my $do_autojoin		= "true";
@@ -330,6 +330,44 @@ sub privmsg
 
 		do_print ":$nick PRIVMSG $channel :http://www.google.com/search?q=$newargs\n";
 	}
+
+	if(($cmd =~ /\.port/i) )
+	{
+	    my $search_type = shift @args;
+	    my $pkg_name = shift @args;
+	    my $path = "";
+	    my $info = "";
+	    my $found = 0;
+
+	    if($args[0] eq "|")
+	    {
+		$person = $args[1];
+	    }
+
+	    open(my $make_in, "/usr/bin/make -C /usr/ports search $search_type=$pkg_name|") or die "Could not fork: $!\n";
+	    while(defined (my $line=<$make_in>))
+	    {
+		chomp $line;
+		if($line =~ /^Path:/)
+		{
+		    $line =~ s/Path: //;
+		    $info = $line;
+		    $found = 1;
+		}
+		if($line =~ /^Info:/)
+		{
+		    do_print ":$nick PRIVMSG $person :$info $line\n";
+		    sleep 1;
+		    $info = "";
+		}
+	    }
+
+	    if($found==0)
+	    {
+		do_print ":$nick PRIVMSG $channel :No port found\n";
+	    }
+	}
+
 	if(($cmd eq ".images"))
 	{
 		my $tmp;
