@@ -647,7 +647,7 @@ sub privmsg
 		    $evallist{$key} = $evalpid;
 		    if(!$evalpid)
 		    {
-			open(my $in, "</home/grobe0ba/irc.img") or die "Could not open: $!\n";
+			open(my $in, "<irc.img") or die "Could not open: $!\n";
 			while(defined(my $line=<$in>))
 			{
 			    chomp $line;
