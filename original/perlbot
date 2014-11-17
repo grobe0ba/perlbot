@@ -639,24 +639,6 @@ sub privmsg
 				}
 			}
 		}
-		if(($cmd = ~ /\.imgblast/i ))
-		{
-		    die "Could not fork: $!\n" unless defined (my $evalpid = fork());
-		    $evalnum = $evalnum +1;
-		    my $key = "eval$evalnum";
-		    $evallist{$key} = $evalpid;
-		    if(!$evalpid)
-		    {
-			open(my $in, "<irc.img") or die "Could not open: $!\n";
-			while(defined(my $line=<$in>))
-			{
-			    chomp $line;
-			    do_print "PRIVMSG $channel :$line\n";
-			    sleep 3;
-			}
-			close $in;
-		    }
-		}
 	}
 	else
 	{
