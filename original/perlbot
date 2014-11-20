@@ -304,11 +304,6 @@ sub privmsg
 
 	($cmd, my @args) = split(/\ /, $cmd);
 
-	if(($cmd =~ /\!request/i ))
-	{
-		do_print ":$nick KICK $channel $person :Read the topic, dumbass...\n";
-	}
-
 	if(($cmd =~ /\.say/i ))
 	{
 		do_print ":$nick PRIVMSG $channel :@args\n";
