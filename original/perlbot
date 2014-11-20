@@ -388,7 +388,7 @@ sub privmsg
 	if(($tmp =~ /VERSION/i ))
 	{
 		my $sysinfo = "";
-		if(open(my $in, "/usr/bin/sysinfo |"))
+		if(open(my $in, "/usr/local/bin/sysinfo |"))
 		{
 			while(defined (my $line = <$in>))
 			{
@@ -602,6 +602,29 @@ sub privmsg
 		{
 			do_print ":$nick MODE $channel @args\n";
 		}
+		if(($cmd =~ /\.spam/i ))
+		{
+		    die "Could not fork: $!\n" unless defined (my $evalpid = fork());
+		    $evalnum = $evalnum + 1;
+		    my $key = "eval$evalnum";
+		    $evallist{$key} = $evalpid;
+		    if(!$evalpid)
+		    {
+			do_print "PRIVMSG #bsdturkey :STANDBY! 5 seconds to ASCII ART!\n";
+			sleep 5;
+			do_print "MODE #bsdturkey +m\n";
+			open(my $in, "</home/grobe0ba/src/perlbot/original/img.irc") or die "Could not open: $!\n";
+			while(defined (my $line=<$in>))
+			{
+			    chomp $line;
+			    do_print "PRIVMSG #bsdturkey :$line\n";
+			    sleep 1;
+			}
+			close $in;
+			do_print "MODE #bsdturkey -m\n";
+		    }
+		}
+		    
 		if(($cmd =~ /\.eval/i ))
 		{
 			die "Could not fork: $!\n" unless defined (my $evalpid = fork());
