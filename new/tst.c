@@ -1,9 +1,0 @@
-(null)
-(null)
-(null)
-(null)
-init
-list
-add
-list
-term
